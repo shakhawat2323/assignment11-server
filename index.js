@@ -6,7 +6,7 @@ const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "https://smirok.netlify.app"],
   Credential: true,
   optionalsucces: true,
 };
@@ -14,7 +14,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.uvwcv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb+srv://assignment11:3YqHJfuRz1hVcaby@cluster0.uvwcv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -56,6 +56,7 @@ app.get("/count", async (req, res) => {
 // });
 
 app.get("/artifact", async (req, res) => {
+  console.log("pagination", req.qurey);
   const result = await Artifactcollacetion.find().toArray();
   res.send(result);
 });
@@ -109,10 +110,11 @@ app.put("/artifact/:id", async (req, res) => {
 app.post("/likecount", async (req, res) => {
   try {
     const artifacts = req.body.artifacts;
+    console.log(req.body);
 
-    if (!artifacts || !artifacts.useremail || !artifacts._id) {
-      return res.status(400).send("Invalid data provided.");
-    }
+    // if (!artifacts || !artifacts.useremail || !artifacts._id) {
+    //   return res.status(400).send("Invalid data provided.");
+    // }
 
     const query = {
       useremail: artifacts.useremail,
@@ -149,7 +151,7 @@ app.post("/likecount", async (req, res) => {
 
 app.get("/likecount/:email", async (req, res) => {
   const email = req.params.email;
-  const query = { "artifacts.useremail": email };
+  const query = { useremail: email };
   const result = await LikeCountcollacetion.find(query).toArray();
 
   res.send(result);
@@ -159,17 +161,17 @@ app.get("/allartifact", async (req, res) => {
     const flter = req.query.flter;
     const search = req.query.search;
     const sort = req.query.sort;
-
     let options = {};
     if (sort) {
       options.sort = { likeCount: sort === "Ascending" ? 1 : -1 };
     }
-    let query = {
-      artifactname: {
+    let query = {};
+    if (search) {
+      query.artifactname = {
         $regex: search,
         $options: "i",
-      },
-    };
+      };
+    }
     console.log(query);
 
     if (flter) query.artifacttype = flter;
