@@ -50,12 +50,6 @@ app.get("/count", async (req, res) => {
   res.send({ count });
 });
 
-// app.get("/artifac", async (req, res) => {
-//   const artifact = Artifactcollacetion.find();
-//   const result = await artifact.toArray();
-//   res.send(result);
-// });
-
 app.get("/artifact", async (req, res) => {
   console.log("pagination", req.qurey);
   const result = await Artifactcollacetion.find().toArray();
@@ -71,11 +65,12 @@ app.post("/artifact", async (req, res) => {
 app.post("/blog", async (req, res) => {
   const artifac = req.body;
   const result = await Blogcollacetion.insertOne(artifac);
-
+  console.log(result);
   res.send(result);
 });
 app.get("/blog", async (req, res) => {
   const result = await Blogcollacetion.find().toArray();
+  console.log(result);
   res.send(result);
 });
 
@@ -132,10 +127,6 @@ app.post("/likecount", async (req, res) => {
   try {
     const artifacts = req.body.artifacts;
     console.log(req.body);
-
-    // if (!artifacts || !artifacts.useremail || !artifacts._id) {
-    //   return res.status(400).send("Invalid data provided.");
-    // }
 
     const query = {
       useremail: artifacts.useremail,
