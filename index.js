@@ -79,6 +79,16 @@ app.get("/blog", async (req, res) => {
   res.send(result);
 });
 
+app.delete("/blogs/:id", async (req, res) => {
+  const id = req.params.id;
+  const qurey = { _id: new ObjectId(id) };
+  const result = await Blogcollacetion.deleteOne(qurey);
+  console.log(id);
+  console.log(qurey);
+  console.log(result);
+  res.send(result);
+});
+
 app.get("/arifacts/:email", async (req, res) => {
   const email = req.params.email;
 
