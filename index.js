@@ -26,6 +26,7 @@ const client = new MongoClient(uri, {
 
 const Artifactcollacetion = client.db("artifactdata").collection("allrtifact ");
 const LikeCountcollacetion = client.db("artifactdata").collection("likeCount");
+const Blogcollacetion = client.db("artifactdata").collection("Blog");
 
 // app.post("/jwt", async (req, res) => {
 //   const email = req.body;
@@ -65,6 +66,16 @@ app.post("/artifact", async (req, res) => {
   const artifac = req.body;
   const result = await Artifactcollacetion.insertOne(artifac);
 
+  res.send(result);
+});
+app.post("/blog", async (req, res) => {
+  const artifac = req.body;
+  const result = await Blogcollacetion.insertOne(artifac);
+
+  res.send(result);
+});
+app.get("/blog", async (req, res) => {
+  const result = await Blogcollacetion.find().toArray();
   res.send(result);
 });
 
