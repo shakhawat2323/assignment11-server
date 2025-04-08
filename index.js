@@ -6,7 +6,11 @@ const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://smirok.netlify.app"],
+  origin: [
+    "http://localhost:5173",
+    "https://smirok.netlify.app",
+    "https://smirok.netlify.app",
+  ],
   Credential: true,
   optionalsucces: true,
 };
@@ -84,12 +88,12 @@ app.delete("/blogs/:id", async (req, res) => {
   res.send(result);
 });
 
-app.get("/arifacts", async (req, res) => {
-  // const email = req.params.email;
+app.get("/arifacts/:email", async (req, res) => {
+  const email = req.params.email;
 
-  // const query = { useremail: email };
+  const query = { useremail: email };
 
-  const result = await Artifactcollacetion.find().toArray();
+  const result = await Artifactcollacetion.find(query).toArray();
 
   res.send(result);
 });
