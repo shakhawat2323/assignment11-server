@@ -84,12 +84,12 @@ app.delete("/blogs/:id", async (req, res) => {
   res.send(result);
 });
 
-app.get("/arifacts/:email", async (req, res) => {
-  const email = req.params.email;
+app.get("/arifacts", async (req, res) => {
+  // const email = req.params.email;
 
-  const query = { useremail: email };
+  // const query = { useremail: email };
 
-  const result = await Artifactcollacetion.find(query).toArray();
+  const result = await Artifactcollacetion.find().toArray();
 
   res.send(result);
 });
